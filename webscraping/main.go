@@ -32,12 +32,12 @@ func handlePanic() {
 	}
 }
 
-func getAmountQuantityName(selectorPath string, ingredient playwright.ElementHandle) string {
+func getAmountQuantityName(selectorPath string, ingredient playwright.ElementHandle, message string) string {
 	defer handlePanic()
 	amount_selector, err := ingredient.QuerySelector(selectorPath)
-	assertErrorToNil("could not get amount selector %v", err)
+	assertErrorToNil("could not get "+message+" %v", err)
 	if amount_selector == nil {
-		panic("no selector found")
+		panic(message)
 	} else {
 		amount, err := amount_selector.TextContent()
 		assertErrorToNil("could not get text %v", err)
@@ -86,6 +86,12 @@ func scrapForRecipe() {
 	}
 	page.WaitForSelector("div.wprm-recipe-ingredient-group")
 
+	recipeNameSelector, err := page.QuerySelector("h2.wprm-recipe-name")
+	assertErrorToNil("error getting selector h2: ", err)
+	recipeName, err := recipeNameSelector.TextContent()
+	assertErrorToNil("could not get recipe name text", err)
+	fmt.Printf(recipeName)
+
 	entries, err := page.QuerySelectorAll("div.wprm-recipe-ingredient-group")
 	assertErrorToNil("error getting selector(s): ", err)
 
@@ -109,9 +115,9 @@ func scrapForRecipe() {
 
 		for _, ingredient := range ingredients {
 
-			amount := getAmountQuantityName("span.wprm-recipe-ingredient-amount", ingredient)
-			unit := getAmountQuantityName("span.wprm-recipe-ingredient-unit", ingredient)
-			name := getAmountQuantityName("span.wprm-recipe-ingredient-name", ingredient)
+			amount := getAmountQuantityName("span.wprm-recipe-ingredient-amount", ingredient, "no amount found")
+			unit := getAmountQuantityName("span.wprm-recipe-ingredient-unit", ingredient, "no unit found")
+			name := getAmountQuantityName("span.wprm-recipe-ingredient-name", ingredient, "no name found")
 
 			ingredient := &Ingredient{
 				Amount: amount,
