@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 
 	"github.com/playwright-community/playwright-go"
@@ -133,7 +134,15 @@ func scrapForRecipe() {
 	jsonFormat, err := json.Marshal(wholeIngredients)
 	assertErrorToNil("error converting to json", err)
 	fmt.Println(string(jsonFormat))
+	saveJsonToFile(jsonFormat, recipeName)
 	close(pw, browser)
+
+}
+
+func saveJsonToFile(jsonFormat []byte, recipeName string) {
+	fileName := recipeName + ".json"
+	err := ioutil.WriteFile(fileName, jsonFormat, 0644)
+	assertErrorToNil("error saving file", err)
 
 }
 
