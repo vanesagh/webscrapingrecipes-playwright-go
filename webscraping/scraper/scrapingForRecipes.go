@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func scrapForWebPageRecipes() {
+func ScrapForWebPageRecipes(urlRecipesSite string) {
 	page, pw, browser := Initialize()
 
 	if _, err := page.Goto("https://theviewfromgreatisland.com/#search/q=muffins"); err != nil {

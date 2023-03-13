@@ -46,9 +46,9 @@ func saveJsonToFile(jsonFormat []byte, recipeName string) {
 
 }
 
-func ScrapForRecipe() {
+func ScrapForRecipe(urlRecipe string) {
 	page, pw, browser := Initialize()
-	if _, err := page.Goto("https://theviewfromgreatisland.com/lemon-muffins-recipe/"); err != nil {
+	if _, err := page.Goto(urlRecipe); err != nil {
 		log.Fatalf("could not goto: %v", err)
 	}
 	page.WaitForSelector("div.wprm-recipe-ingredient-group")
@@ -57,14 +57,14 @@ func ScrapForRecipe() {
 	AssertErrorToNil("error getting selector h2: ", err)
 	recipeName, err := recipeNameSelector.TextContent()
 	AssertErrorToNil("could not get recipe name text", err)
-	fmt.Printf(recipeName)
+	fmt.Print(recipeName)
 
 	entries, err := page.QuerySelectorAll("div.wprm-recipe-ingredient-group")
 	AssertErrorToNil("error getting selector(s): ", err)
 
 	p := len(entries) // check if it is not an empty list
 	fmt.Printf("Number of entries found: %v\n", p)
-	wholeIngredients := make(map[string]Ingredients)
+	wholeIngredients := make(map[string][]Ingredient)
 	for _, entry := range entries {
 
 		process_selector, err := entry.QuerySelector("h4.wprm-recipe-group-name")
@@ -73,7 +73,7 @@ func ScrapForRecipe() {
 		AssertErrorToNil("could not get process text", err)
 
 		fmt.Printf("process: %s ,", process)
-		arrayIngredients := Ingredients{}
+		//arrayIngredients := Ingredients{}
 
 		ingredients, err := entry.QuerySelectorAll("ul.wprm-recipe-ingredients > li")
 		AssertErrorToNil("error getting selectors %v", err)
@@ -86,15 +86,16 @@ func ScrapForRecipe() {
 			unit := GetAmountQuantityName("span.wprm-recipe-ingredient-unit", ingredient, "no unit found")
 			name := GetAmountQuantityName("span.wprm-recipe-ingredient-name", ingredient, "no name found")
 
-			ingred := Ingredient{
+			ingred := &Ingredient{
 				Amount: amount,
 				Unit:   unit,
 				Name:   name,
 			}
-			arrayIngredients.AddIngredient(&ingred)
+			//arrayIngredients.AddIngredient(ingred)
+			wholeIngredients[process] = append(wholeIngredients[process], *ingred)
 
 		}
-		wholeIngredients[process] = arrayIngredients
+		//wholeIngredients[process] = arr
 	}
 	//fmt.Printf("%+v\n", wholeIngredients)
 	jsonFormat, err := json.Marshal(wholeIngredients)

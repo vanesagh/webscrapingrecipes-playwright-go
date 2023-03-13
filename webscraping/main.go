@@ -6,6 +6,6 @@ import (
 
 func main() {
 	//scrapForWebPageRecipes()
-	scraper.ScrapForRecipe()
+	scraper.ScrapForRecipe("https://theviewfromgreatisland.com/lemon-muffins-recipe/")
 
 }
