@@ -13,8 +13,10 @@ import (
 // getIngredientsCmd represents the getIngredients command
 var getIngredientsCmd = &cobra.Command{
 	Use:   "getIngredients",
-	Short: "Get the Ingredients of a recipe",
-	Long:  `Get the Ingredients of a specific recipe and saved into a json file`,
+	Short: "Get the Ingredients of a recipe found in the the view from great island website.",
+	Long: `Get the Ingredients of a recipe from the the view from great island website and it is saved into a json file.
+	Just type:
+	 ./bin/webscraping-cli getIngredients URL...`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var urlRecipe string
 		if len(args) >= 1 && args[0] != "" {

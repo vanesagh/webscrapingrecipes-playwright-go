@@ -1,0 +1,17 @@
+version: "3"
+
+tasks:
+  build:
+    desc: Build the app
+    cmds:
+      - go build -o bin/webscraping-cli main.go
+
+  run:
+    desc: Run the app
+    cmds:
+      - go run main.go
+
+  clean:
+    desc: Remove all retrieved *.json files
+    cmds:
+      - rm *.json
