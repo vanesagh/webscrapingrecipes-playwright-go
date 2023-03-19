@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	//scrapForWebPageRecipes()
-	scraper.ScrapForRecipe("https://theviewfromgreatisland.com/lemon-muffins-recipe/")
+	scraper.ScrapForWebPageRecipes("muffins")
+	//scraper.ScrapForRecipe("https://theviewfromgreatisland.com/lemon-muffins-recipe/")
 
 }

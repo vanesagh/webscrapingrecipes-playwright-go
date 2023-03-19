@@ -5,10 +5,13 @@ import (
 	"log"
 )
 
-func ScrapForWebPageRecipes(urlRecipesSite string) {
+func ScrapForWebPageRecipes(recipe string) {
 	page, pw, browser := Initialize()
+	urlRecipesSite := "https://theviewfromgreatisland.com/#search/q="
+	siteQuery := urlRecipesSite + recipe
+	urlRecipesSet := urlRecipeSet{}
 
-	if _, err := page.Goto("https://theviewfromgreatisland.com/#search/q=muffins"); err != nil {
+	if _, err := page.Goto(siteQuery); err != nil {
 		log.Fatalf("could not goto: %v", err)
 	}
 
@@ -32,10 +35,12 @@ func ScrapForWebPageRecipes(urlRecipesSite string) {
 
 		link, err := linkElement.GetAttribute("href")
 		AssertErrorToNil("could not get link: ", err)
+		urlRecipesSet.AddElement(link)
 
 		fmt.Printf("%d:, recipe: %s, url: %s\n", i+1, recipeName, link)
 
 	}
+	fmt.Println(urlRecipesSet)
 	Close(pw, browser)
 
 }
