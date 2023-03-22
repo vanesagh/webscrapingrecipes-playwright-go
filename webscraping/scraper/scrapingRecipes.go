@@ -3,7 +3,6 @@ package scraper
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 
 	"github.com/playwright-community/playwright-go"
@@ -37,13 +36,6 @@ func GetAmountQuantityName(selectorPath string, ingredient playwright.ElementHan
 		return amount
 
 	}
-}
-
-func saveJsonToFile(jsonFormat []byte, recipeName string) {
-	fileName := recipeName + ".json"
-	err := ioutil.WriteFile(fileName, jsonFormat, 0644)
-	AssertErrorToNil("error saving file", err)
-
 }
 
 func ScrapForRecipe(urlRecipe string) {

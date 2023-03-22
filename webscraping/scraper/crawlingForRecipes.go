@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func ScrapForWebPageRecipes(recipe string) {
+func CrawlForWebPageRecipes(recipe string) {
 	page, pw, browser := Initialize()
 	urlRecipesSite := "https://theviewfromgreatisland.com/#search/q="
 	siteQuery := urlRecipesSite + recipe
@@ -40,7 +40,11 @@ func ScrapForWebPageRecipes(recipe string) {
 		fmt.Printf("%d:, recipe: %s, url: %s\n", i+1, recipeName, link)
 
 	}
-	fmt.Println(urlRecipesSet)
+	urlsMap := urlsMap{}
+	urlsMap.saveToMap(urlRecipesSet, recipe)
+	jsonFormat := urlsMap.convertToJSON()
+	saveJsonToFile(jsonFormat, recipe)
+	//fmt.Println(urlsMap)
 	Close(pw, browser)
 
 }
