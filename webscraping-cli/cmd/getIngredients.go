@@ -23,7 +23,7 @@ var getIngredientsCmd = &cobra.Command{
 			urlRecipe = args[0]
 		}
 		fmt.Println("Try to get ingredients from " + urlRecipe)
-		scraper.ScrapForRecipe(urlRecipe)
+		scraper.ScrapeForRecipe(urlRecipe)
 	},
 }
 

@@ -2,8 +2,10 @@ package scraper
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/playwright-community/playwright-go"
 )
@@ -38,8 +40,14 @@ func GetAmountQuantityName(selectorPath string, ingredient playwright.ElementHan
 	}
 }
 
-func ScrapForRecipe(urlRecipe string) {
+func ScrapeForRecipe(urlRecipe string) error {
 	page, pw, browser := Initialize()
+
+	if err := validateURL(urlRecipe); err != nil {
+		//log.Fatal(err)
+		return err
+	}
+
 	if _, err := page.Goto(urlRecipe); err != nil {
 		log.Fatalf("could not goto: %v", err)
 	}
@@ -57,12 +65,17 @@ func ScrapForRecipe(urlRecipe string) {
 	p := len(entries) // check if it is not an empty list
 	fmt.Printf("Number of entries found: %v\n", p)
 	wholeIngredients := make(map[string][]Ingredient)
+	var process string
 	for _, entry := range entries {
 
 		process_selector, err := entry.QuerySelector("h4.wprm-recipe-group-name")
-		AssertErrorToNil("error getting process selector", err)
-		process, err := process_selector.TextContent()
-		AssertErrorToNil("could not get process text", err)
+		if process_selector != nil {
+			AssertErrorToNil("error getting process selector", err)
+			process, err = process_selector.TextContent()
+			AssertErrorToNil("could not get process text", err)
+		} else {
+			process = "main"
+		}
 
 		fmt.Printf("process: %s ,", process)
 		//arrayIngredients := Ingredients{}
@@ -96,6 +109,8 @@ func ScrapForRecipe(urlRecipe string) {
 	saveJsonToFile(jsonFormat, recipeName)
 	Close(pw, browser)
 
+	return nil
+
 }
 
 func AssertErrorToNil(message string, err error) {
@@ -111,4 +126,12 @@ func handlePanic() {
 	if a != nil {
 		fmt.Println("Recover of: ", a)
 	}
+}
+
+func validateURL(urlRecipe string) error {
+	if !strings.HasPrefix(urlRecipe, "https://theviewfromgreatisland.com/") {
+		err := errors.New("incorrect URL")
+		return err
+	}
+	return nil
 }

@@ -16,8 +16,8 @@ func CrawlForWebPageRecipes(recipe string) {
 	}
 
 	page.WaitForSelector("div#card.vertical")
-	entries, err := page.QuerySelectorAll("div#card.vertical")
 
+	entries, err := page.QuerySelectorAll("div#card.vertical")
 	AssertErrorToNil("error getting selector: ", err)
 
 	p := len(entries) // check if it is not an empty list
