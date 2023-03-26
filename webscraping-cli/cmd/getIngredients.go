@@ -13,8 +13,8 @@ import (
 // getIngredientsCmd represents the getIngredients command
 var getIngredientsCmd = &cobra.Command{
 	Use:   "getIngredients",
-	Short: "Get the Ingredients of a recipe from in a cooking website.",
-	Long: `Get the Ingredients of a recipe from a cooking website and it is saved into a json file.
+	Short: "Getting the Ingredients of a recipe from in a cooking website.",
+	Long: `Getting the Ingredients of a recipe from a cooking website and it is saved into a json file.
 	Just type:
 	 ./bin/webscraping-cli getIngredients URL...`,
 	Run: func(cmd *cobra.Command, args []string) {

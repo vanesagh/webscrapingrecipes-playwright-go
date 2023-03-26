@@ -1,5 +1,5 @@
 /*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
+Copyright © 2023 Vanesa GH
 */
 package cmd
 
@@ -12,7 +12,7 @@ import (
 // getUrlsOfRecipesCmd represents the getUrlsOfRecipes command
 var getUrlsOfRecipesCmd = &cobra.Command{
 	Use:   "getUrlsOfRecipes",
-	Short: "get the urls of recipes found by crawling in a cooking website",
+	Short: "Getting the urls of recipes found by crawling in a cooking website",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
