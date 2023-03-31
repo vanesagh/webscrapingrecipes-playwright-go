@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	scraper "webscraping/scraper"
 
 	"github.com/spf13/cobra"
@@ -18,12 +19,24 @@ var getIngredientsCmd = &cobra.Command{
 	Just type:
 	 ./bin/webscraping-cli getIngredients URL...`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var urlRecipe string
-		if len(args) >= 1 && args[0] != "" {
-			urlRecipe = args[0]
+		filePath, _ := cmd.Flags().GetString("file")
+		if filePath != "" {
+			fmt.Println(filePath)
+			listUrls, err := scraper.OpenFile(filePath)
+			if err != nil {
+				log.Fatalf(err.Error())
+			}
+			fmt.Println(listUrls)
+		} else {
+			var urlRecipe string
+			if len(args) >= 1 && args[0] != "" {
+				urlRecipe = args[0]
+			}
+			fmt.Println("Try to get ingredients from " + urlRecipe)
+			scraper.ScrapeForRecipe(urlRecipe)
+
 		}
-		fmt.Println("Try to get ingredients from " + urlRecipe)
-		scraper.ScrapeForRecipe(urlRecipe)
+
 	},
 }
 
@@ -34,7 +47,7 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// getIngredientsCmd.PersistentFlags().String("foo", "", "A help for foo")
+	getIngredientsCmd.PersistentFlags().String("file", "", "A file with a list of urls")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
