@@ -14,7 +14,6 @@ func Initialize() (playwright.Page, *playwright.Playwright, playwright.Browser) 
 	AssertErrorToNil("could not launch browser: ", err)
 
 	page, err := browser.NewPage()
-	page.SetDefaultTimeout(10000) //needed more time. Otherwise got nothing
 	AssertErrorToNil("could not create page: ", err)
 
 	return page, pw, browser
