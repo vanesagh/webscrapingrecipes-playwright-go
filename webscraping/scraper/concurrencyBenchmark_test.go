@@ -11,7 +11,7 @@ func slowStubWebsiteChecker(_ string) bool {
 }
 
 func BenchmarkCheckWebsites(b *testing.B) {
-	urls := make([]string, 100)
+	urls := make([]interface{}, 100)
 	for i := 0; i < len(urls); i++ {
 		urls[i] = "a url"
 	}

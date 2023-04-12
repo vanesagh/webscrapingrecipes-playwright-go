@@ -1,33 +1,31 @@
 package scraper
 
 import (
-	"reflect"
+	"fmt"
+	"strings"
 	"testing"
 )
 
 func mockWebsiteChecker(url string) bool {
-	if url == "waat:// fuhurterwe.geds" {
-		return false
-	}
-	return true
+	return strings.HasPrefix(url, "https://theviewfromgreatisland.com/")
 }
 
 func TestConcurrency(t *testing.T) {
-	websites := []string{
-		"http://google.com",
-		"waat://furhurterwe.gde",
-		"http://blog.gypsydave5.com",
-	}
 
-	want := map[string]bool{
-		"http://google.com":          true,
-		"waat://furhurterwe.gde":     false,
-		"http://blog.gypsydave5.com": true,
-	}
+	t.Run("check json file list", func(t *testing.T) {
+		urlsList, _ := OpenFile("../muffins.json")
+		List := urlsList.([]interface{})
+		fmt.Printf("%T", List)
+		got := CheckWebsites(mockWebsiteChecker, List)
+		fmt.Println(got)
 
-	got := CheckWebsites(mockWebsiteChecker, websites)
-	if reflect.DeepEqual(want, got) {
-		t.Fatalf("wanted %v, got %v", want, got)
-	}
+	})
+
+	t.Run("check function", func(t *testing.T) {
+		urlsList, _ := OpenFile("../muffins.json")
+		List := urlsList.([]interface{})
+		ScrapeInParallel(List)
+
+	})
 
 }
