@@ -49,7 +49,8 @@ func ScrapeForRecipe(urlRecipe string) error {
 	}
 
 	if _, err := page.Goto(urlRecipe); err != nil {
-		log.Fatalf("could not goto: %v", err)
+		//log.Fatalf("could not goto: %v", err)
+		return err
 	}
 	page.WaitForSelector("div.wprm-recipe-ingredient-group")
 
