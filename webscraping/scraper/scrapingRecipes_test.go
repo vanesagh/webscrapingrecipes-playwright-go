@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -10,12 +9,13 @@ func TestScrapeRecipe(t *testing.T) {
 		urlRecipe := "https://www.google.com"
 		err := ScrapeForRecipe(urlRecipe)
 
-		fmt.Println(err)
+		assertError(t, err)
 
 	})
 
 	t.Run("handle recipes with one process", func(t *testing.T) {
-		ScrapeForRecipe("https://theviewfromgreatisland.com/triple-berry-muffins-recipe/")
+		err := ScrapeForRecipe("https://theviewfromgreatisland.com/perfect-blueberry-muffins/#cls-video-container-zLMOOuwt")
+		assertError(t, err)
 	})
 
 }
