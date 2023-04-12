@@ -1,18 +1,19 @@
 package scraper
 
 import (
-	"fmt"
 	"testing"
 )
 
-func TestFileHandling(t *testing.T) {
-	assertError := func(t testing.TB, err error) {
-		t.Helper()
-		if err == nil {
+func assertError(t testing.TB, err error) {
+	t.Helper()
+	if err == nil {
 
-			t.Error("wanted error but didn't get one")
-		}
+		t.Error("wanted error but didn't get one")
 	}
+}
+
+func TestFileHandling(t *testing.T) {
+
 	t.Run("wrong extension", func(t *testing.T) {
 		path := "recipes.doc"
 		_, err := OpenFile(path)
@@ -26,9 +27,16 @@ func TestFileHandling(t *testing.T) {
 		assertError(t, err)
 	})
 
-	t.Run("open file", func(t *testing.T) {
+	/*t.Run("open file", func(t *testing.T) {
 		listUrls, _ := OpenFile("../muffins.json")
-		fmt.Printf("%v", listUrls)
-	})
+		listOfUrls := listUrls.([]interface{})
+		fmt.Printf("%T", listOfUrls)
+		for i, r := range listOfUrls {
+			//rs := r.(string)
+			fmt.Printf("%d, %T", i, r)
+
+		}
+
+	})*/
 
 }
